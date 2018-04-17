@@ -1,0 +1,108 @@
+platform:
+  - x64
+environment:
+  matrix:
+  - PYTHON_VERSION: 3.6
+    PYTHON: C:\Python36-x64
+    PYTHON_ARCH: x64
+configuration:
+  - Release
+version: 1.0.0.{build}
+
+init:
+  - cmd: echo Project - %APPVEYOR_PROJECT_NAME%
+  - cmd: echo Worker image - %APPVEYOR_BUILD_WORKER_IMAGE%
+  - cmd: echo Branch - %APPVEYOR_REPO_BRANCH%
+  - cmd: echo Author - %APPVEYOR_REPO_COMMIT_AUTHOR%
+  - cmd: echo Commit - %APPVEYOR_REPO_COMMIT%
+  - cmd: echo Platform - %PLATFORM%
+  - cmd: echo Configuration - %CONFIGURATION%
+  - cmd: set RAW_BUILD_VERSION=%APPVEYOR_BUILD_VERSION%
+  - cmd: IF NOT "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" (SET APPVEYOR_BUILD_VERSION=%APPVEYOR_BUILD_VERSION%-alpha) ELSE IF "%APPVEYOR_REPO_BRANCH%"=="develop" (SET APPVEYOR_BUILD_VERSION=%APPVEYOR_BUILD_VERSION%-beta) ELSE IF NOT "%APPVEYOR_REPO_BRANCH%"=="master" (SET APPVEYOR_BUILD_VERSION=%APPVEYOR_BUILD_VERSION%-alpha)
+  - cmd: echo Version - %APPVEYOR_BUILD_VERSION%
+
+# Here comes automated git clone by AppVeyor
+
+nuget:
+  account_feed: false
+  project_feed: false
+
+install:
+  - cmd: SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+  - cmd: SET PYTHONHOME=%PYTHON%
+  - cmd: python --version
+  - cmd: python -m pip install --upgrade pip
+  - cmd: pip --version
+  - cmd: pip uninstall -y virtualenv
+  - cmd: pip install matplotlib
+  - cmd: pip freeze
+  - cmd: SET CMAKE_CONFIG=%CONFIGURATION%
+  - cmd: SET MSVC_VERSION=14
+  - cmd: SET QT_QPA_PLATFORM_PLUGIN_PATH=%PYTHONHOME%\Library\plugins\platforms
+
+# skip branch build if there is an active pull request
+skip_branch_with_pr: true
+
+build_script:
+  - cmd: cd contrib
+  - cmd: WinBuild.cmd -DWITHOUT_NUMPY=ON
+  - cmd: cd ..
+
+after_build:
+  - cmd: 7z a examples.zip .\examples\build\Release\* -r
+  - cmd: 7z a examples.zip %PYTHON%\* -r
+  - cmd: mkdir nuget\include
+  - cmd: copy matplotlibcpp.h nuget\include\matplotlibcpp.h
+  - cmd: mkdir nuget\sandbox
+  - cmd: xcopy /SY %PYTHON% nuget\sandbox > nul
+  - cmd: python patch_nuspec.py
+  - cmd: cd nuget
+  - cmd: nuget pack
+  - cmd: cd ..
+
+test: off
+
+artifacts:
+  - path: '**\*.nupkg'
+    name: NugetPackages-$(configuration)
+  - path: examples.zip
+    name: examples
+
+deploy:
+  # push examples to GitHub releases
+  - provider: GitHub
+    release: matplotlib-cpp-v$(appveyor_build_version)
+    auth_token:
+      secure: dQadz+smqtuxpigZ/LmrUKyA0uVZ5kgljKntyoHEdobTycbeMywbfmiJtZPNcOQ2
+    artifact: /.*\.zip/
+    draft: true
+  # push all NuGet-s to GitHub releases
+  # overwrites Debug NuGets with Release ones
+  - provider: GitHub
+    release: matplotlib-cpp-v$(appveyor_build_version)
+    auth_token:
+      secure: dQadz+smqtuxpigZ/LmrUKyA0uVZ5kgljKntyoHEdobTycbeMywbfmiJtZPNcOQ2
+    artifact: /.*\.nupkg/
+    draft: true
+  - provider: NuGet
+    api_key:
+      secure: m0/NMqAykEDYeKoXSeb4waubmkEALUdAJAG3jvEPjsd8VUOm5AvqX6UjaC0SNUsq
+    skip_symbols: true
+    artifact: /.*\.nupkg/
+
+notifications:
+- provider: Webhook
+  url:
+    secure: V16hjhyXfcLNyhNUih9v1GBs2+lmplDr/5q28bfO5JtvCquVQYTtCpkFUicVp7cOd5FX4nrByFu0jSeU8bfVHUmup/CilGIjzv+kxltPTVA=
+  method: POST
+  content_type: application/json
+  body: >-
+    {
+      "icon": "https://www.appveyor.com/assets/img/appveyor-logo-256.png",
+      "activity": "AppVeyor for matplotlib-cpp",
+      "title": "Build {{buildVersion}} **{{#failed}}failed{{/failed}}{{#passed}}passed{{/passed}}** in {{duration}}",
+      "body": "{{#isPullRequest}}Pull request: [#{{pullRequestId}}](https://github.com/gmrukwa/matplotlib-cpp/pull/{{pullRequestId}})\n{{/isPullRequest}}Branch: [{{branch}}](https://github.com/gmrukwa/matplotlib-cpp/tree/{{branch}})\nCommit: [{{commitId}} {{commitMessage}}](https://github.com/gmrukwa/matplotlib-cpp/commit/{{commitId}})\nAuthor: {{commitAuthor}}\n[Build details]({{buildUrl}})"
+    }
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true

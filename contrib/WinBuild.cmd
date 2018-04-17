@@ -14,7 +14,6 @@ if "%MSVC_VERSION%"=="14" (
 ) else if "%MSVC_VERSION%"=="12" (
     if "%processor_architecture%" == "AMD64" (
         set CMAKE_GENERATOR=Visual Studio 12 2013 Win64
-    
     ) else (
         set CMAKE_GENERATOR=Visual Studio 12 2013
     )
@@ -28,19 +27,26 @@ pushd examples
 if NOT EXIST build mkdir build
 pushd build
 
+set failed=0
+
+set callname=%~dp0
+shift
+
 cmake -G"!CMAKE_GENERATOR!" ^
       -DPYTHONHOME:STRING=%PYTHONHOME%^
       -DCMAKE_BUILD_TYPE:STRING=%CMAKE_CONFIG% ^
-      %~dp0
-cmake --build . --config %CMAKE_CONFIG%  
+      %* %callname%
+cmake --build . --config %CMAKE_CONFIG% || set /A failed=failed+1
 
-pushd %CMAKE_CONFIG%  
+pushd %CMAKE_CONFIG%
 if not EXIST platforms mkdir platforms
-if EXIST %PYTHONHOME%/Library/plugins/platforms/qwindows.dll ^
-cp %PYTHONHOME%/Library/plugins/platforms/qwindows.dll ./platforms/
+if EXIST %PYTHONHOME%\Library\plugins\platforms\qwindows.dll ^
+cp %PYTHONHOME%\Library\plugins\platforms\qwindows.dll .\platforms\
+dir .\platforms
 popd
 REM move ./%CMAKE_CONFIG% ../
 popd
 popd
 popd
+EXIT /B %failed%
 @endlocal
