@@ -1111,7 +1111,7 @@ struct plot_impl<std::false_type>
         PyObject* pystring = PyString_FromString(format.c_str());
 
         auto itx = begin(x), ity = begin(y);
-        for(size_t i = 0; i < xs; ++i) {
+        for(size_t i = 0; i < static_cast<size_t>(xs); ++i) {
             PyList_SetItem(xlist, i, PyFloat_FromDouble(*itx++));
             PyList_SetItem(ylist, i, PyFloat_FromDouble(*ity++));
         }
