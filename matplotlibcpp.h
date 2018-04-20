@@ -21,78 +21,10 @@
 #include "stem.h"
 #include "fill_between.h"
 #include "hist.h"
+#include "log.h"
 
 
 namespace matplotlibcpp {
-template<typename NumericX, typename NumericY>
-bool semilogx(const std::vector<NumericX>& x, const std::vector<NumericY>& y, const std::string& s = "")
-{
-    assert(x.size() == y.size());
-
-    PyObject* xarray = get_array(x);
-    PyObject* yarray = get_array(y);
-
-    PyObject* pystring = PyString_FromString(s.c_str());
-
-    PyObject* plot_args = PyTuple_New(3);
-    PyTuple_SetItem(plot_args, 0, xarray);
-    PyTuple_SetItem(plot_args, 1, yarray);
-    PyTuple_SetItem(plot_args, 2, pystring);
-
-    PyObject* res = PyObject_CallObject(detail::_interpreter::get().s_python_function_semilogx, plot_args);
-
-    Py_DECREF(plot_args);
-    if(res != nullptr) Py_DECREF(res);
-
-    return res != nullptr;
-}
-
-template<typename NumericX, typename NumericY>
-bool semilogy(const std::vector<NumericX>& x, const std::vector<NumericY>& y, const std::string& s = "")
-{
-    assert(x.size() == y.size());
-
-    PyObject* xarray = get_array(x);
-    PyObject* yarray = get_array(y);
-
-    PyObject* pystring = PyString_FromString(s.c_str());
-
-    PyObject* plot_args = PyTuple_New(3);
-    PyTuple_SetItem(plot_args, 0, xarray);
-    PyTuple_SetItem(plot_args, 1, yarray);
-    PyTuple_SetItem(plot_args, 2, pystring);
-
-    PyObject* res = PyObject_CallObject(detail::_interpreter::get().s_python_function_semilogy, plot_args);
-
-    Py_DECREF(plot_args);
-    if(res != nullptr) Py_DECREF(res);
-
-    return res != nullptr;
-}
-
-template<typename NumericX, typename NumericY>
-bool loglog(const std::vector<NumericX>& x, const std::vector<NumericY>& y, const std::string& s = "")
-{
-    assert(x.size() == y.size());
-
-    PyObject* xarray = get_array(x);
-    PyObject* yarray = get_array(y);
-
-    PyObject* pystring = PyString_FromString(s.c_str());
-
-    PyObject* plot_args = PyTuple_New(3);
-    PyTuple_SetItem(plot_args, 0, xarray);
-    PyTuple_SetItem(plot_args, 1, yarray);
-    PyTuple_SetItem(plot_args, 2, pystring);
-
-    PyObject* res = PyObject_CallObject(detail::_interpreter::get().s_python_function_loglog, plot_args);
-
-    Py_DECREF(plot_args);
-    if(res != nullptr) Py_DECREF(res);
-
-    return res != nullptr;
-}
-
 template<typename NumericX, typename NumericY>
 bool errorbar(const std::vector<NumericX> &x, const std::vector<NumericY> &y, const std::vector<NumericX> &yerr, const std::string &s = "")
 {
