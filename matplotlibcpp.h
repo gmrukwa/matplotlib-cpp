@@ -239,6 +239,24 @@ private:
 
 } // end namespace detail
 
+namespace helpers {
+
+PyObject* to_dict(const std::map<std::string, std::string>& some_dict)
+{
+    PyObject* python_dict = PyDict_New();
+    for (std::map<std::string, std::string>::const_iterator it = some_dict.begin(); it != some_dict.end(); ++it)
+    {
+        auto key = PyUnicode_FromString(it->first.c_str());
+        auto value = PyUnicode_FromString(it->second.c_str());
+        PyDict_SetItem(python_dict, key, value);
+        Py_DECREF(key);
+        Py_DECREF(value);
+    }
+    return python_dict;
+}
+
+} // end namespace helpers
+
 // must be called before the first regular call to matplotlib to have any effect
 inline void backend(const std::string& name)
 {
@@ -332,11 +350,7 @@ bool plot(const std::vector<Numeric> &x, const std::vector<Numeric> &y, const st
     PyTuple_SetItem(args, 1, yarray);
 
     // construct keyword args
-    PyObject* kwargs = PyDict_New();
-    for(std::map<std::string, std::string>::const_iterator it = keywords.begin(); it != keywords.end(); ++it)
-    {
-        PyDict_SetItemString(kwargs, it->first.c_str(), PyString_FromString(it->second.c_str()));
-    }
+    PyObject* kwargs = helpers::to_dict(keywords);
 
     PyObject* res = PyObject_Call(detail::_interpreter::get().s_python_function_plot, args, kwargs);
 
@@ -362,12 +376,7 @@ bool stem(const std::vector<Numeric> &x, const std::vector<Numeric> &y, const st
     PyTuple_SetItem(args, 1, yarray);
 
     // construct keyword args
-    PyObject* kwargs = PyDict_New();
-    for (std::map<std::string, std::string>::const_iterator it =
-            keywords.begin(); it != keywords.end(); ++it) {
-        PyDict_SetItemString(kwargs, it->first.c_str(),
-                PyString_FromString(it->second.c_str()));
-    }
+    PyObject* kwargs = helpers::to_dict(keywords);
 
     PyObject* res = PyObject_Call(
             detail::_interpreter::get().s_python_function_stem, args, kwargs);
@@ -398,11 +407,7 @@ bool fill_between(const std::vector<Numeric>& x, const std::vector<Numeric>& y1,
     PyTuple_SetItem(args, 2, y2array);
 
     // construct keyword args
-    PyObject* kwargs = PyDict_New();
-    for(std::map<std::string, std::string>::const_iterator it = keywords.begin(); it != keywords.end(); ++it)
-    {
-        PyDict_SetItemString(kwargs, it->first.c_str(), PyUnicode_FromString(it->second.c_str()));
-    }
+    PyObject* kwargs = helpers::to_dict(keywords);
 
     PyObject* res = PyObject_Call(detail::_interpreter::get().s_python_function_fill_between, args, kwargs);
 
