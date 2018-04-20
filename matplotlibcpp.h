@@ -746,7 +746,7 @@ template<typename Numeric>
 bool plot(const std::vector<Numeric>& y, const std::string& format = "")
 {
     std::vector<Numeric> x(y.size());
-    for(size_t i=0; i<x.size(); ++i) x.at(i) = i;
+    for(size_t i=0; i<x.size(); ++i) x.at(i) = static_cast<Numeric>(i);
     return plot(x,y,format);
 }
 
@@ -754,7 +754,7 @@ template<typename Numeric>
 bool stem(const std::vector<Numeric>& y, const std::string& format = "")
 {
     std::vector<Numeric> x(y.size());
-    for (size_t i = 0; i < x.size(); ++i) x.at(i) = i;
+    for (size_t i = 0; i < x.size(); ++i) x.at(i) = static_cast<Numeric>(i);
     return stem(x, y, format);
 }
 
