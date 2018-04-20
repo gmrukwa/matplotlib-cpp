@@ -69,6 +69,7 @@ struct _interpreter {
     PyObject *s_python_empty_tuple;
     PyObject *s_python_function_stem;
     PyObject *s_python_function_xkcd;
+    PyObject *s_python_function_imshow;
 
     /* For now, _interpreter is implemented as a singleton since its currently not possible to have
        multiple independent embedded python interpreters without patching the python source code
@@ -169,6 +170,7 @@ private:
         s_python_function_tight_layout = PyObject_GetAttrString(pymod, "tight_layout");
         s_python_function_stem = PyObject_GetAttrString(pymod, "stem");
         s_python_function_xkcd = PyObject_GetAttrString(pymod, "xkcd");
+        s_python_function_imshow = PyObject_GetAttrString(pymod, "imshow");
 
         if(    s_python_function_show == nullptr
             || s_python_function_close == nullptr
@@ -198,6 +200,7 @@ private:
             || s_python_function_tight_layout == nullptr
             || s_python_function_stem == nullptr
             || s_python_function_xkcd == nullptr
+            || s_python_function_imshow == nullptr
         ) { throw std::runtime_error("Couldn't find required function!"); }
 
         if (   PyFunction_Check(s_python_function_show) == 0
@@ -227,6 +230,7 @@ private:
             || PyFunction_Check(s_python_function_errorbar) == 0
             || PyFunction_Check(s_python_function_stem) == 0
             || PyFunction_Check(s_python_function_xkcd) == 0
+            || PyFunction_Check(s_python_function_imshow) == 0
         ) { throw std::runtime_error("Python object is unexpectedly not a PyFunction."); }
 
         s_python_empty_tuple = PyTuple_New(0);
