@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>matplotlib-cpp</id>
+    <version>1.0.0</version>
+    <authors>Benno Evers, Atsushi Sakai, Grzegorz Mrukwa, Chachay, Kartik Mohta, ...</authors>
+    <owners>Grzegorz Mrukwa</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Extremely simple yet powerful header-only C++ plotting library built on the popular matplotlib</description>
+    <releaseNotes>First release with c++ header and embedded Python sandbox.</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <projectUrl>https://github.com/gmrukwa/matplotlib-cpp</projectUrl>
+    <licenseUrl>https://github.com/gmrukwa/matplotlib-cpp/blob/master/LICENSE</licenseUrl>
+  </metadata>
+</package>
