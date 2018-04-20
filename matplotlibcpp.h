@@ -12,7 +12,17 @@
 #  include <functional>
 #endif
 
-#include <Python.h>
+#ifdef _DEBUG
+    #ifdef _MSC_VER
+        #undef _DEBUG
+        #include <Python.h>
+        #define _DEBUG
+    #else
+        #include <Python.h>
+    #endif
+#else
+    #include <Python.h>
+#endif
 
 #ifndef WITHOUT_NUMPY
 #  define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
