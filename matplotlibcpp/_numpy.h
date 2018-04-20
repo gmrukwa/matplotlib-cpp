@@ -51,4 +51,21 @@ PyObject* get_array(const std::vector<Numeric>& v)
 }
 
 #endif // WITHOUT_NUMPY
+
+template<typename Numeric>
+PyObject* get_array(const std::vector<Numeric>& v, size_t width, size_t height)
+{
+    assert(v.size() == width * height);
+
+    PyObject* list = PyList_New(height);
+    for(size_t i = 0; i < height; ++i) {
+        PyObject* row = PyList_New(width);
+        for(size_t j = 0u; j < width; ++j)
+        {
+            PyList_SetItem(row, j, PyFloat_FromDouble(v.at(i * width + j)));
+        }
+        PyList_SetItem(list, i, row);
+    }
+    return list;
+}
 } // end namespace matplotlibcpp
