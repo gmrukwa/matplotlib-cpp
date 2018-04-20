@@ -7,7 +7,7 @@
     <owners>Grzegorz Mrukwa</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Extremely simple yet powerful header-only C++ plotting library built on the popular matplotlib</description>
-    <releaseNotes>First release with c++ header and embedded Python sandbox.</releaseNotes>
+    <releaseNotes>Added imshow function.</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <projectUrl>https://github.com/gmrukwa/matplotlib-cpp</projectUrl>
     <licenseUrl>https://github.com/gmrukwa/matplotlib-cpp/blob/master/LICENSE</licenseUrl>
