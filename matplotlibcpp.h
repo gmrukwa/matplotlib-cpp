@@ -35,12 +35,6 @@ PyObject* to_dict(const std::map<std::string, std::string>& some_dict)
 
 } // end namespace helpers
 
-// must be called before the first regular call to matplotlib to have any effect
-inline void backend(const std::string& name)
-{
-    detail::s_backend = name;
-}
-
 inline bool annotate(std::string annotation, double x, double y)
 {
     PyObject * xy = PyTuple_New(2);

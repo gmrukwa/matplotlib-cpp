@@ -208,4 +208,11 @@ private:
     }
 };
 
-}} // end namespace matplotlibcpp::detail
+} // end namespace detail
+
+// must be called before the first regular call to matplotlib to have any effect
+inline void backend(const std::string& name)
+{
+    detail::s_backend = name;
+}
+} // end namespace matplotlibcpp
