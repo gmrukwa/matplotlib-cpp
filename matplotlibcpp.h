@@ -284,7 +284,7 @@ inline bool annotate(std::string annotation, double x, double y)
 
     if(res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 #ifndef WITHOUT_NUMPY
@@ -358,7 +358,7 @@ bool plot(const std::vector<Numeric> &x, const std::vector<Numeric> &y, const st
     Py_DECREF(kwargs);
     if(res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename Numeric>
@@ -386,7 +386,7 @@ bool stem(const std::vector<Numeric> &x, const std::vector<Numeric> &y, const st
     if (res != nullptr)
         Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template< typename Numeric >
@@ -415,7 +415,7 @@ bool fill_between(const std::vector<Numeric>& x, const std::vector<Numeric>& y1,
     Py_DECREF(kwargs);
     if(res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template< typename Numeric>
@@ -442,7 +442,7 @@ bool hist(const std::vector<Numeric>& y, long bins=10,std::string color="b", dou
     Py_DECREF(kwargs);
     if(res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template< typename Numeric>
@@ -466,7 +466,7 @@ bool named_hist(std::string label,const std::vector<Numeric>& y, long bins=10, s
     Py_DECREF(kwargs);
     if(res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename NumericX, typename NumericY>
@@ -489,7 +489,7 @@ bool plot(const std::vector<NumericX>& x, const std::vector<NumericY>& y, const 
     Py_DECREF(plot_args);
     if(res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename NumericX, typename NumericY>
@@ -514,7 +514,7 @@ bool stem(const std::vector<NumericX>& x, const std::vector<NumericY>& y, const 
     if (res != nullptr)
         Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename NumericX, typename NumericY>
@@ -537,7 +537,7 @@ bool semilogx(const std::vector<NumericX>& x, const std::vector<NumericY>& y, co
     Py_DECREF(plot_args);
     if(res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename NumericX, typename NumericY>
@@ -560,7 +560,7 @@ bool semilogy(const std::vector<NumericX>& x, const std::vector<NumericY>& y, co
     Py_DECREF(plot_args);
     if(res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename NumericX, typename NumericY>
@@ -583,7 +583,7 @@ bool loglog(const std::vector<NumericX>& x, const std::vector<NumericY>& y, cons
     Py_DECREF(plot_args);
     if(res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename NumericX, typename NumericY>
@@ -615,7 +615,7 @@ bool errorbar(const std::vector<NumericX> &x, const std::vector<NumericY> &y, co
     else
         throw std::runtime_error("Call to errorbar() failed.");
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename Numeric>
@@ -639,7 +639,7 @@ bool named_plot(const std::string& name, const std::vector<Numeric>& y, const st
     Py_DECREF(plot_args);
     if (res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename Numeric>
@@ -664,7 +664,7 @@ bool named_plot(const std::string& name, const std::vector<Numeric>& x, const st
     Py_DECREF(plot_args);
     if (res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename Numeric>
@@ -689,7 +689,7 @@ bool named_semilogx(const std::string& name, const std::vector<Numeric>& x, cons
     Py_DECREF(plot_args);
     if (res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename Numeric>
@@ -714,7 +714,7 @@ bool named_semilogy(const std::string& name, const std::vector<Numeric>& x, cons
     Py_DECREF(plot_args);
     if (res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename Numeric>
@@ -739,7 +739,7 @@ bool named_loglog(const std::string& name, const std::vector<Numeric>& x, const 
     Py_DECREF(plot_args);
     if (res != nullptr) Py_DECREF(res);
 
-    return res;
+    return res != nullptr;
 }
 
 template<typename Numeric>
@@ -1126,7 +1126,7 @@ struct plot_impl<std::false_type>
         Py_DECREF(plot_args);
         if(res != nullptr) Py_DECREF(res);
 
-        return res;
+        return res != nullptr;
     }
 };
 
