@@ -53,6 +53,8 @@ after_build:
   - cmd: 7z a examples.zip %PYTHON%\* -r
   - cmd: mkdir nuget\include
   - cmd: copy matplotlibcpp.h nuget\include\matplotlibcpp.h
+  - cmd: mkdir nuget\include\matplotlibcpp
+  - cmd: copy matplotlibcpp\* nuget\include\matplotlibcpp\
   - cmd: mkdir nuget\sandbox
   - cmd: xcopy /SY %PYTHON% nuget\sandbox > nul
   - cmd: python patch_nuspec.py
