@@ -200,33 +200,33 @@ private:
             || s_python_function_xkcd == nullptr
         ) { throw std::runtime_error("Couldn't find required function!"); }
 
-        if (   !PyFunction_Check(s_python_function_show)
-            || !PyFunction_Check(s_python_function_close)
-            || !PyFunction_Check(s_python_function_draw)
-            || !PyFunction_Check(s_python_function_pause)
-            || !PyFunction_Check(s_python_function_figure)
-            || !PyFunction_Check(s_python_function_plot)
-            || !PyFunction_Check(s_python_function_semilogx)
-            || !PyFunction_Check(s_python_function_semilogy)
-            || !PyFunction_Check(s_python_function_loglog)
-            || !PyFunction_Check(s_python_function_fill_between)
-            || !PyFunction_Check(s_python_function_subplot)
-            || !PyFunction_Check(s_python_function_legend)
-            || !PyFunction_Check(s_python_function_annotate)
-            || !PyFunction_Check(s_python_function_ylim)
-            || !PyFunction_Check(s_python_function_title)
-            || !PyFunction_Check(s_python_function_axis)
-            || !PyFunction_Check(s_python_function_xlabel)
-            || !PyFunction_Check(s_python_function_ylabel)
-            || !PyFunction_Check(s_python_function_grid)
-            || !PyFunction_Check(s_python_function_xlim)
-            || !PyFunction_Check(s_python_function_ion)
-            || !PyFunction_Check(s_python_function_save)
-            || !PyFunction_Check(s_python_function_clf)
-            || !PyFunction_Check(s_python_function_tight_layout)
-            || !PyFunction_Check(s_python_function_errorbar)
-            || !PyFunction_Check(s_python_function_stem)
-            || !PyFunction_Check(s_python_function_xkcd)
+        if (   PyFunction_Check(s_python_function_show) == 0
+            || PyFunction_Check(s_python_function_close) == 0
+            || PyFunction_Check(s_python_function_draw) == 0
+            || PyFunction_Check(s_python_function_pause) == 0
+            || PyFunction_Check(s_python_function_figure) == 0
+            || PyFunction_Check(s_python_function_plot) == 0
+            || PyFunction_Check(s_python_function_semilogx) == 0
+            || PyFunction_Check(s_python_function_semilogy) == 0
+            || PyFunction_Check(s_python_function_loglog) == 0
+            || PyFunction_Check(s_python_function_fill_between) == 0
+            || PyFunction_Check(s_python_function_subplot) == 0
+            || PyFunction_Check(s_python_function_legend) == 0
+            || PyFunction_Check(s_python_function_annotate) == 0
+            || PyFunction_Check(s_python_function_ylim) == 0
+            || PyFunction_Check(s_python_function_title) == 0
+            || PyFunction_Check(s_python_function_axis) == 0
+            || PyFunction_Check(s_python_function_xlabel) == 0
+            || PyFunction_Check(s_python_function_ylabel) == 0
+            || PyFunction_Check(s_python_function_grid) == 0
+            || PyFunction_Check(s_python_function_xlim) == 0
+            || PyFunction_Check(s_python_function_ion) == 0
+            || PyFunction_Check(s_python_function_save) == 0
+            || PyFunction_Check(s_python_function_clf) == 0
+            || PyFunction_Check(s_python_function_tight_layout) == 0
+            || PyFunction_Check(s_python_function_errorbar) == 0
+            || PyFunction_Check(s_python_function_stem) == 0
+            || PyFunction_Check(s_python_function_xkcd) == 0
         ) { throw std::runtime_error("Python object is unexpectedly not a PyFunction."); }
 
         s_python_empty_tuple = PyTuple_New(0);
