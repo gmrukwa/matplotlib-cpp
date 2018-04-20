@@ -24,3 +24,4 @@
 #include "matplotlibcpp/log.h"
 #include "matplotlibcpp/errorbar.h"
 #include "matplotlibcpp/utilities.h"
+#include "matplotlibcpp/imshow.h"
